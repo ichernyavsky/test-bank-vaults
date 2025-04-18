@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vault
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vault
+      annotations:
+        vault.security.banzaicloud.io/vault-addr: "http://192.168.88.207:8200" # optional, the address of the Vault service, default values is https://vault:8200
+        vault.security.banzaicloud.io/vault-role: "vault" # optional, the default value is the name of the ServiceAccount the Pod runs in, in case of Secrets and ConfigMaps it is "default"
+        vault.security.banzaicloud.io/vault-skip-verify: "true" # optional, skip TLS verification of the Vault server certificate
+        vault.security.banzaicloud.io/vault-agent: "false" # optional, if true, a Vault Agent will be started to do Vault authentication, by default not needed and vault-env will do Kubern>
+        vault.security.banzaicloud.io/vault-path: "kubernetes" # optional, the Kubernetes Auth mount path in Vault the default value is "kubernetes"
+    spec:
+      serviceAccountName: vault
+      containers:
+      - name: alpine
+        image: alpine
+        command: ["sh", "-c", "echo $password && echo going to sleep... && sleep 10000"]
+        env:
+        - name: password
+          value: vault:mysecret/data/database/secrets#vault-secret
