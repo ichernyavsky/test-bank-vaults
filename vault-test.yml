@@ -25,4 +25,4 @@ spec:
         command: ["sh", "-c", "echo $secret && echo going to sleep... && sleep 10000"]
         env:
         - name: secret
-          value: vault:mysecret/data/database/test-sa#test-sa
+          value: vault:mysecret/data/database/test-sa#test-sa-key
