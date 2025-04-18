@@ -22,7 +22,7 @@ spec:
       containers:
       - name: alpine
         image: alpine
-        command: ["sh", "-c", "echo $password && echo going to sleep... && sleep 10000"]
+        command: ["sh", "-c", "echo $secret && echo going to sleep... && sleep 10000"]
         env:
         - name: secret
           value: vault:mysecret/data/database/secrets#vault-secret
